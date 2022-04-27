@@ -1,0 +1,5 @@
+/notebooks/CustomerDataToBePredicted.csv
+/notebooks/lgbm_model.pkl
+/notebooks/preprocessor.pkl
+/notebooks/data_clean/
+/notebooks/input/
