@@ -80,7 +80,6 @@ def barplot_by_feature(df, feature_name):
     fig.show()
     return fig
 
-
 def feature_description(df_description, feature_name):
     return df_description[df_description.Row == feature_name].Description.values[0]
 
