@@ -151,7 +151,7 @@ st.subheader('Prédiction')
 st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
 
 
-option_top_n_features = st.slider('How much top features do you see ?', 1, inputs.shape[1])
+option_top_n_features = st.slider('How much top features do you see ?', 10, inputs.shape[1])
 st.write(feature_importance_local_graphics(id_=option_id, top_n_features=option_top_n_features))
 
 
@@ -167,5 +167,3 @@ else:
 
 option_feature_description = st.selectbox('What feature do you see description ?', list(hc_col_desc.Row))
 st.write(feature_description(df_description=hc_col_desc, feature_name=option_feature_description))
-
-

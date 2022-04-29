@@ -1,13 +1,12 @@
 import pickle
-import numpy as np
 import pandas as pd
 import flask
 from flask import Flask, jsonify, request, render_template
 
 
 # Load preprocessor and lgbm model
-preprocessor = pickle.load(open("models/preprocessor.sav", "rb"))
-lgbm_model = pickle.load(open("models/lgbm_model.sav", "rb"))
+preprocessor = pickle.load(open("models/preprocessor.pkl", "rb"))
+lgbm_model = pickle.load(open("models/lgbm_model.pkl", "rb"))
 
 # Load sample of data (X test) where client ids are indexes
 inputs = pd.read_csv('data/CustomerDataToBePredicted.csv')
