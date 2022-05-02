@@ -27,6 +27,8 @@ def predict_class_and_proba_customer(data, id_, preprocess, model):
 
 app = Flask(__name__)
 
+#url = 'https://flask-api-heroku-app.com/results'
+
 @app.route('/')
 def home():
     return 'Prédiction de prêt'
