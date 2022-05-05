@@ -126,22 +126,51 @@ hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
 st.title(" Application 'Prêt à dépenser' ")
 
 st.write("""
-## 1. Application pour prédire l'accord d'un prêt
+## 1. Application pour prédire l'accord ou non d'un prêt
 ### 2. Visualisation global et local des critères principaux ayant abouti à cette prédiction
 """)
 
 st.subheader('Data')
 st.write(inputs.head())
 
-st.subheader('Feature importance global')
+if st.button("Description LightGBM Classifier"):
+    st.write("Le modèle de prédiction utilisé ici est le LightGBM Classifier, l'un des algorithmes ML les plus performants. \
+             LightGBM est un cadre de boosting de gradient rapide, distribué et haute performance basé sur des algorithmes d'arbre \
+             de décision, utilisé pour le classement, la classification et de nombreuses autres tâches d'apprentissage automatique.")
+else:
+    st.write("Modèle LightGBM Classifier")
+
+if st.button("Description Méthode shape"):
+    st.write("### But:")
+    st.write(
+    "Calculer la valeur de Shapley pour toutes les variables à chaque client du dataset. \
+    Cette approche explique la sortie du modèle par la somme des effets de chaque variable. \
+    Ils se basent sur la valeur de Shapley qui provient de la théorie des jeux. \
+    L’idée est de moyenner l’impact qu’une variable a pour toutes les combinaisons de variables possibles.")
+    st.write("### Locale:")
+    st.write(
+    "Grâce à la valeur de Shap, on peut déterminer l’effet des différentes variables d’une prédiction pour un modèle \
+    qui explique l’écart de cette prédiction par rapport à la valeur de base.")
+    st.write("### Globale:")
+    st.write("En moyennant les valeurs absolues des valeurs de Shap pour chaque variable, \
+    nous pouvons remonter à l’importance globale des variables.")
+else:
+    st.write("Méthode shap (SHapley Additive exPlanation)")
+
+st.subheader('Approche globale')
+st.write("### Visualisation de l’importance des variables du modèle de manière globale")
 # Print feature importance global with shap
 graph_mean_global = feature_importance_global_graphics(inputs, lgbm_shap_values)[0]
 graph_shap_global = feature_importance_global_graphics(inputs, lgbm_shap_values)[1]
 st.write(graph_mean_global)
+st.write("Sur cette image, l’importance des variables est calculée en moyennant la valeur absolue des valeurs de Shap.")
 st.write(graph_shap_global)
+st.write("Sur cette image, les valeurs de Shap sont représentées pour chaque variable dans leur ordre d’importance, \
+chaque point représente une valeur de Shap (pour un exemple), les points rouges représentent des valeurs élevées de la variable \
+et les points bleus des valeurs basses de la variable")
 
-st.write('Examples ids of bad clients: ', list_of_worst_customer_ids)
-st.write('Examples ids of good clients:', list_of_best_customer_ids)
+st.write('### Examples ids of bad clients: ', list_of_worst_customer_ids)
+st.write('### Examples ids of good clients:', list_of_best_customer_ids)
 
 
 option_id = st.selectbox('What ids do you want ?', list_of_ids_in_order)
@@ -150,11 +179,21 @@ st.write('You selected:', option_id)
 st.subheader('Prédiction')
 st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
 
-
+st.subheader('Approche locale')
 option_top_n_features = st.slider('How much top features do you see ?', 10, inputs.shape[1])
 st.write(feature_importance_local_graphics(id_=option_id, top_n_features=option_top_n_features))
+st.write("En rouge, les variables qui ont un impact positif \
+(contribuent à ce que la prédiction soit plus élevée que la valeur de base) \
+et, en bleu, celles ayant un impact négatif \
+(contribuent à ce que la prédiction soit plus basse que la valeur de base)")
 
 
+st.subheader('Graphiques')
+st.write("Selon si la variable choisi est discrète (peut prendre toutes les valeurs possibles d'un intervalle de nombres) \
+         ou continue (peut prendre uniquement certaines valeurs d'un intervalle de nombres) \
+         le graphique sera respectivement un Barplot(Graphe en barre représentant pour toutes les données de la variable étudiée, \
+         avec répartition des prédictions acceptées/refusées), ou un boxplot(Représentation schématique des quartiles, médiane et moyenne \
+         pour toutes les données de la variable étudiée, avec répartition des prédictions/acceptées/refusées)")
 option_feature = st.selectbox('What feature do you see graph ?', all_variables)
 st.write('Value: ', inputs.loc[option_id][option_feature])
 
