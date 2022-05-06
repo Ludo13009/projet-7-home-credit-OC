@@ -27,18 +27,14 @@ def predict_class_and_proba_customer(data, id_, preprocess, model):
 
 app = Flask(__name__)
 
-#url = 'https://flask-api.heroku-app.com/results'
-
 @app.route('/')
 def home():
     return 'Prédiction de prêt'
-
 
 @app.route('/predict/<customer_id>', methods=['GET', 'POST'])
 def predict(customer_id):
     results = predict_class_and_proba_customer(data=inputs, id_=int(customer_id), preprocess=preprocessor, model=lgbm_model)
     return results
-
 
 if __name__ == "__main__":
     app.run(debug=True)
