@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 from PIL import Image
 import pickle
 import pandas as pd
@@ -130,6 +131,9 @@ list_of_some_ids.sort()
 # Data feature description
 hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
 
+# API prédiction
+api_url = 'https://api-flask-projet-home-credit.herokuapp.com/'
+str_predict = 'predict/'
 
 
 col1, col2, col3 = st.columns(3)
@@ -194,7 +198,10 @@ option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_some_ids)
 st.write('Vous avez sélectionné: ', option_id)
 
 st.subheader('Prédiction')
-st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
+option_URL = URL + predict + str(option_id)
+r = requests.get(url=option_URL)
+st.write(r.text)
+# st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
 
 st.subheader('Approche locale')
 option_top_n_features = st.slider('Combien de critères voulez-vous voir ?', 10, inputs.shape[1])
