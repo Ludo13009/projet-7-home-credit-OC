@@ -3,3 +3,9 @@
 /notebooks/preprocessor.pkl
 /notebooks/data_clean/
 /notebooks/input/
+/venv
+__pycache__
+.idea
+.ipynb_checkpoints
+data/.ipynb_checkpoints
+notebooks/.ipynb_checkpoints
