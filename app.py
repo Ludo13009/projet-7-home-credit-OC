@@ -198,8 +198,8 @@ option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_some_ids)
 st.write('Vous avez sélectionné: ', option_id)
 
 st.subheader('Prédiction')
-option_URL = URL + predict + str(option_id)
-r = requests.get(url=option_URL)
+option_url = api_url + str_predict + str(option_id)
+r = requests.get(url=option_url)
 st.write(r.text)
 # st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
 
