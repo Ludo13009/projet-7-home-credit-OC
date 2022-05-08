@@ -119,6 +119,11 @@ data_predict_0 = data_predict[data_predict.predict == 0]
 data_predict_0['proba'] = data_predict_0.list_of_proba.apply(extract_proba, i=0)
 list_of_best_customer_ids = data_predict_0[data_predict_0.proba > 0.95].head(10).index.tolist()
 
+list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
+list_of_some_ids.sort()
+# inputs_some_ids = inputs.loc[list_of_some_ids]
+# inputs_some_ids.to_csv('CustomerDataExamples.csv', index=False)
+
 # Data feature description
 hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
 
@@ -140,7 +145,7 @@ st.write("""
 """)
 
 st.subheader('Data')
-st.write(inputs.head())
+st.write(inputs.loc[list_of_some_ids])
 
 if st.button("Description LightGBM Classifier"):
     st.write("Le modèle de prédiction utilisé ici est le LightGBM Classifier, l'un des algorithmes ML les plus performants. \
@@ -182,7 +187,7 @@ st.write("- Exemples d'ID de mauvais clients: ", list_of_worst_customer_ids)
 st.write("- Exemples d'ID de bons clients: ", list_of_best_customer_ids)
 
 
-option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_ids_in_order)
+option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_some_ids)
 st.write('Vous avez sélectionné: ', option_id)
 
 st.subheader('Prédiction')
