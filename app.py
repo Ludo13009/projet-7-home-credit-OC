@@ -3,7 +3,6 @@ import requests
 from PIL import Image
 import pickle
 import pandas as pd
-import numpy as np
 import shap
 import matplotlib
 import matplotlib.pyplot as plt
@@ -17,8 +16,7 @@ warnings.filterwarnings('ignore')
 def calculate_explainer_shapval_and_means(classifier, feature_inputs):
     explainer = shap.TreeExplainer(classifier)
     shap_values = explainer.shap_values(feature_inputs)
-    mean_values = np.abs(shap_values).mean(0)
-    return explainer, shap_values, mean_values
+    return explainer, shap_values
 
 @st.cache(hash_funcs={matplotlib.figure.Figure: hash})
 def feature_importance_global_graphics(feature_inputs, shap_values):
@@ -99,7 +97,7 @@ preprocessor = pickle.load(open("models/preprocessor.pkl", "rb"))
 lgbm_model = pickle.load(open("models/lgbm_model.pkl", "rb"))
 
 # Shap explainer, values and mean values
-lgbm_explainer, lgbm_shap_values, lgbm_mean_values = calculate_explainer_shapval_and_means(lgbm_model, inputs)
+lgbm_explainer, lgbm_shap_values = calculate_explainer_shapval_and_means(lgbm_model, inputs)
 
 # Discrete, continuous and all variables
 discrete_variables = sorted(inputs.loc[:, inputs.nunique() < 10].columns.tolist())
