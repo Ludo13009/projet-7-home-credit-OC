@@ -122,11 +122,6 @@ list_of_best_customer_ids = data_predict_0[data_predict_0.proba > 0.95].head(10)
 
 list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
 list_of_some_ids.sort()
-# inputs_some_ids = inputs.loc[list_of_some_ids]
-# inputs_some_ids.to_csv('CustomerDataExamples.csv')
-# inputs_some_ids = pd.read_csv('CustomerDataExamples.csv')
-# inputs_some_ids.sort_values(by='SK_ID_CURR', inplace=True)
-# inputs_some_ids.set_index(keys='SK_ID_CURR', inplace=True)
 
 # Data feature description
 hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
@@ -194,7 +189,8 @@ st.write("- Exemples d'ID de mauvais clients: ", list_of_worst_customer_ids)
 st.write("- Exemples d'ID de bons clients: ", list_of_best_customer_ids)
 
 
-option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_some_ids)
+option_id = st.selectbox('Quel ID voulez-vous voir ?', list_of_ids_in_order)
+# list_of_some_ids
 st.write('Vous avez sélectionné: ', option_id)
 
 st.subheader('Prédiction')
