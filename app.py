@@ -28,18 +28,6 @@ def feature_importance_global_graphics(feature_inputs, shap_values):
     plt.show()
     return fig1, fig2
 
-
-def predict_class_and_proba_customer(data, id_, preprocess, model):
-    data_id_customer = data.loc[id_].to_frame().T
-    data_customer_preprocess = preprocess.transform(data_id_customer)
-    y_pred = model.predict(data_customer_preprocess)[0]
-    y_prob = model.predict_proba(data_customer_preprocess)[0].tolist()
-    if y_pred == 0:
-        return "Prêt accordé" + " ->  Probabilité:" + f"{y_prob[0]}"
-    else:
-        return "Prêt Refusé" + " ->  Probabilité:" + f"{y_prob[1]}"
-
-
 def feature_importance_local_graphics(id_, top_n_features):
     index_id_ = list_of_ids_in_order.index(id_)
     fig = plt.figure(figsize=(10, 8))
@@ -84,9 +72,6 @@ def feature_description(df_description, feature_name):
     return df_description[df_description.Row == feature_name].Description.values[0]
 
 
-
-## Load all data
-
 # Data to predict
 inputs = pd.read_csv('data/CustomerDataToBePredicted.csv')
 inputs.sort_values(by='SK_ID_CURR', inplace=True)
@@ -118,8 +103,8 @@ data_predict_0 = data_predict[data_predict.predict == 0]
 data_predict_0['proba'] = data_predict_0.list_of_proba.apply(extract_proba, i=0)
 list_of_best_customer_ids = data_predict_0[data_predict_0.proba > 0.95].head(10).index.tolist()
 
-list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
-list_of_some_ids.sort()
+# list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
+# list_of_some_ids.sort()
 
 # Data feature description
 hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
@@ -137,7 +122,6 @@ with col2:
     st.image(image, caption='Prêt à dépenser')
 with col3:
     st.write(" ")
-
 
 
 st.write("""
@@ -195,7 +179,6 @@ st.subheader('Prédiction')
 option_url = api_url + str_predict + str(option_id)
 r = requests.get(url=option_url)
 st.write(r.text)
-# st.write(predict_class_and_proba_customer(data=inputs, id_=option_id, preprocess=preprocessor, model=lgbm_model))
 
 st.subheader('Approche locale')
 option_top_n_features = st.slider('Combien de critères voulez-vous voir ?', 10, inputs.shape[1])
