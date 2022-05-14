@@ -103,8 +103,8 @@ data_predict_0 = data_predict[data_predict.predict == 0]
 data_predict_0['proba'] = data_predict_0.list_of_proba.apply(extract_proba, i=0)
 list_of_best_customer_ids = data_predict_0[data_predict_0.proba > 0.95].head(10).index.tolist()
 
-# list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
-# list_of_some_ids.sort()
+list_of_some_ids = list_of_worst_customer_ids + list_of_best_customer_ids
+list_of_some_ids.sort()
 
 # Data feature description
 hc_col_desc = pd.read_csv('data/home_credit_feature_description.csv')
@@ -199,11 +199,35 @@ option_feature = st.selectbox('Quel critère particulier voulez-vous visualiser 
 st.write('Valeur: ', inputs.loc[option_id][option_feature])
 
 if option_feature in continuous_variables:
+    st.write("Représentation schématique des quartiles, médiane et moyenne")
     st.write(boxplot_by_feature(df=data_predict, feature_name=option_feature)[0])
+    st.write("Séparation entre Prêt accordé et Prêt refusé")
     st.write(boxplot_by_feature(df=data_predict, feature_name=option_feature)[1])
 else:
+    st.write("Répartition des valeurs et Séparation entre Prêt accordé et Prêt refusé")
     st.write(barplot_by_feature(df=data_predict, feature_name=option_feature))
-
 
 option_feature_description = st.selectbox('De quel critère voulez_vous voir la description ?', list(hc_col_desc.Row))
 st.write(feature_description(df_description=hc_col_desc, feature_name=option_feature_description))
+
+
+st.write("## Nouveaux critères")
+st.write("### Par le calcul")
+st.write("- DAYS_EMPLOYED_PERC = DAYS_EMPLOYED / DAYS_BIRTH")
+st.write("- INCOME_CREDIT_PERC = AMT_INCOME_TOTAL / AMT_CREDIT")
+st.write("- INCOME_PER_PERSON = AMT_INCOME_TOTAL / CNT_FAM_MEMBERS")
+st.write("- ANNUITY_INCOME_PERC = AMT_ANNUITY/ AMT_INCOME_TOTAL")
+st.write("- PAYMENT_RATE = AMT_ANNUITY / AMT_CREDIT")
+st.write("- PAYMENT_PERC = AMT_PAYMENT / AMT_INSTALMENT (Percentage paid in each installment (amount paid and installment value))")
+st.write("- PAYMENT_DIFF = AMT_INSTALMENT - AMT_PAYMENT (Difference paid in each installment (amount paid and installment value))")
+st.write("- DPD = DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT (Days past due)")
+st.write("- DBD = DAYS_INSTALMENT - DAYS_ENTRY_PAYMENT (days before due)")
+st.write("### Minimum, Maximum, Moyenne, Variance, Somme (Ajout suffixe)")
+st.write("- Ajout de min, max, mean, var, sum en suffixe pour certaines variables")
+st.write("### Ajout préfixe selon les données d'où est extraite la variable")
+st.write("- BURO_")
+st.write("- ACTIVE_ (Crédit activé)")
+st.write("- CLOSED_ (Crédit fermé)")
+st.write("- POS_ ( (point of sales) and cash loans) et POS_COUNT (cash)")
+st.write("- INSTAL_ et INSTAL_COUNT")
+st.write("- CC_ et CC_COUNT (carte de crédit)")
