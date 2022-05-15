@@ -61,9 +61,9 @@ def boxplot_by_feature(df, feature_name):
 def barplot_by_feature(df, feature_name):
     fig = plt.figure(figsize=(10, 8))
     df = df.copy()
-    df['iniatialize'] = 1
-    df = df[[feature_name, 'predict', 'iniatialize']].groupby([feature_name, 'predict']).count().reset_index()
-    sns.barplot(x=df[feature_name], y=df['iniatialize'], hue=df['predict'])
+    df['Count'] = 1
+    df = df[[feature_name, 'predict', 'Count']].groupby([feature_name, 'predict']).count().reset_index()
+    sns.barplot(x=df[feature_name], y=df['Count'], hue=df['predict'])
     plt.xticks(rotation=0)
     fig.show()
     return fig
@@ -222,6 +222,8 @@ st.write("- PAYMENT_PERC = AMT_PAYMENT / AMT_INSTALMENT (Percentage paid in each
 st.write("- PAYMENT_DIFF = AMT_INSTALMENT - AMT_PAYMENT (Difference paid in each installment (amount paid and installment value))")
 st.write("- DPD = DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT (Days past due)")
 st.write("- DBD = DAYS_INSTALMENT - DAYS_ENTRY_PAYMENT (days before due)")
+st.write("### Par encodage(one hot encoder, pour les variables catégorielles)")
+st.write("- Exemples: occupation type -> Tous les types d'occupation deviennent des critères binaire (non 0, oui 1), organization type etc..")
 st.write("### Minimum, Maximum, Moyenne, Variance, Somme (Ajout suffixe)")
 st.write("- Ajout de min, max, mean, var, sum en suffixe pour certaines variables")
 st.write("### Ajout préfixe selon les données d'où est extraite la variable")
