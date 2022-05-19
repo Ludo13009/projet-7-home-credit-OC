@@ -28,6 +28,7 @@ def feature_importance_global_graphics(feature_inputs, shap_values):
     plt.show()
     return fig1, fig2
 
+@st.cache(hash_funcs={matplotlib.figure.Figure: hash})
 def feature_importance_local_graphics(id_, top_n_features):
     index_id_ = list_of_ids_in_order.index(id_)
     fig = plt.figure(figsize=(10, 8))
@@ -49,6 +50,7 @@ def predict_all_data(data, preprocess, model):
 def extract_proba(x, i):
     return x[i]
 
+@st.cache(hash_funcs={matplotlib.figure.Figure: hash})
 def boxplot_by_feature(df, feature_name):
     fig1 = plt.figure(figsize=(10, 8))
     sns.boxplot(data=df[[feature_name]], showfliers=False, showmeans=True)
@@ -58,6 +60,7 @@ def boxplot_by_feature(df, feature_name):
     fig2.show()
     return fig1, fig2
 
+@st.cache(hash_funcs={matplotlib.figure.Figure: hash})
 def barplot_by_feature(df, feature_name):
     fig = plt.figure(figsize=(10, 8))
     df = df.copy()
@@ -68,8 +71,13 @@ def barplot_by_feature(df, feature_name):
     fig.show()
     return fig
 
+@st.cache
 def feature_description(df_description, feature_name):
     return df_description[df_description.Row == feature_name].Description.values[0]
+
+@st.cache
+def get_client_predict(url):
+    return requests.get(url=url)
 
 
 # Data to predict
@@ -177,7 +185,7 @@ st.write('Vous avez sélectionné: ', option_id)
 
 st.subheader('Prédiction')
 option_url = api_url + str_predict + str(option_id)
-r = requests.get(url=option_url)
+r = get_client_predict(option_url)
 st.write(r.text)
 
 st.subheader('Approche locale')
